@@ -20,7 +20,7 @@ let items = [
   { id: '8', name: '8', parentId: '3' },
 ]
 
-items.map(item => {
+items.forEach(item => {
   const children = findChildren(item, items, {
     rootKey: 'id',
     foreignKey: 'parentId',
