@@ -1,0 +1,26 @@
+{
+  "name": "recura",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/recura.js",
+  "scripts": {
+    "build": "microbundle -o dist"
+  },
+  "keywords": [
+    "recursive",
+    "walker",
+    "children"
+  ],
+  "author": "crapthings",
+  "license": "MIT",
+  "dependencies": {
+    "isfunction": "0.0.6",
+    "lodash.groupby": "^4.6.0",
+    "lodash.map": "^4.6.0"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.4",
+    "microbundle": "^0.2.4",
+    "mongodb": "^3.0.1"
+  }
+}
