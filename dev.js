@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const { MongoClient } = require('mongodb')
 
-const findChildren = require('./')
+const findChildren = require('./index.js')
 
 function test1() {
   let items = [
@@ -19,10 +19,12 @@ function test1() {
   ]
 
   console.time('test1')
+  const cachedItems = _.groupBy(items, 'parentId')
   items.map(item => {
     const children = findChildren(item, items, {
       rootKey: 'id',
       foreignKey: 'parentId',
+      // cachedItems,
       // enableMemoize: true,
     })
 
@@ -42,6 +44,7 @@ async function test2 () {
   const cubedb = client.db('meteor')
   const Groups = cubedb.collection('groups')
   const _groups = await Groups.find({ isDeleted: { $ne: true } }).toArray()
+  const cachedItems = _.groupBy(_groups, 'parentGroupId')
 
   console.time('test2')
   const groups = await buildGroups()
@@ -54,6 +57,7 @@ async function test2 () {
       const children = findChildren(group, _groups, {
         rootKey: '_id',
         foreignKey: 'parentGroupId',
+        // cachedItems,
         enableMemoize: true,
       })
       // console.timeEnd('findChildren')

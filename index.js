@@ -10,9 +10,13 @@ module.exports = function findChildren(root, items = [], opts = {}, mapper) {
     rootKey, foreignKey,
     withRoot, rootKeyOnly,
     enableMemoize,
+    cachedItems,
   } = opts
 
-  const groupItemsByForeignKey = enableMemoize ? mgby(items, foreignKey) : groupBy(items, foreignKey)
+  const groupItemsByForeignKey = cachedItems
+    || enableMemoize
+    ? mgby(items, foreignKey)
+    : groupBy(items, foreignKey)
 
   let children = [root]
   let _children = [].concat(children)
