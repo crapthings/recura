@@ -7,37 +7,37 @@ function test1() {
   let items = [
     { id: '1', name: '1' },
     { id: '2', name: '2', parentId: '1' },
-    { id: '3', name: '3', parentId: '1' },
-    { id: '4', name: '4', parentId: '3' },
     { id: '5', name: '5', parentId: '4' },
+    { id: '3', name: '3', parentId: '1' },
+    { id: '10', name: '10', parentId: '9' },
     { id: '6', name: '6', parentId: '1' },
+    { id: '11', name: '11', parentId: '2' },
+    { id: '9', name: '9', parentId: '4' },
     { id: '7', name: '7', parentId: '4' },
     { id: '8', name: '8', parentId: '3' },
-    { id: '9', name: '9', parentId: '4' },
-    { id: '10', name: '10', parentId: '9' },
-    { id: '11', name: '11', parentId: '2' },
+    { id: '4', name: '4', parentId: '3' },
   ]
 
   console.time('test1')
-  const cachedItems = _.groupBy(items, 'parentId')
-  items.map(item => {
+  // const cachedItems = _.groupBy(items, 'parentId')
+  const a = items.map(item => {
     const children = findChildren(item, items, {
       rootKey: 'id',
       foreignKey: 'parentId',
       pathKey: 'name',
       pathAs: 'path',
-      withRoot: true,
+      // withRoot: true,
       // cachedItems,
       // enableMemoize: true,
     })
 
-    item.children = children
+    // item.children = [...children]
+    // console.log(children)
     // return item
-    console.log('name', item.name, 'children\n', JSON.stringify(item, null, 2), '\n'.repeat(5))
-    throw 1
+    // throw 1
+    return { ...item }
   })
-  console.log(items)
-  console.log(items.length)
+  console.log(JSON.stringify(a, null, 2), '\n'.repeat(5))
   console.timeEnd('test1')
 }
 
