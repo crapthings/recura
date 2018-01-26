@@ -1,13 +1,21 @@
+const isFunction = require('isfunction')
 const map = require('lodash.map')
 const groupBy = require('lodash.groupby')
-const isFunction = require('isfunction')
+const memoize = require('lodash.memoize')
+
+const mgby = memoize(groupBy)
 
 module.exports = function findChildren(root, items = [], opts = {}, mapper) {
-  const { rootKey, foreignKey, withRoot, rootKeyOnly } = opts
-  const groupItemsByForeignKey = groupBy(items, foreignKey)
+  const {
+    rootKey, foreignKey,
+    withRoot, rootKeyOnly,
+    enableMemoize,
+  } = opts
 
-  const bypass = {}
+  const groupItemsByForeignKey = enableMemoize ? mgby(items, foreignKey) : groupBy(items, foreignKey)
+
   let children = [root]
+  let _children = [].concat(children)
 
   recurse()
 
@@ -23,14 +31,17 @@ module.exports = function findChildren(root, items = [], opts = {}, mapper) {
   return children
 
   function recurse() {
-    for (child of children) {
-      if (bypass[child[rootKey]]) continue
+    for (child of _children) {
+      _children.shift()
+
       const foundChildren = groupItemsByForeignKey[child[rootKey]]
-      if (foundChildren) {
-        children = children.concat(foundChildren)
-        bypass[child[rootKey]] = true
-        recurse()
-      }
+
+      if (!foundChildren)
+        return recurse()
+
+      children.push.apply(children, foundChildren)
+      _children.push.apply(_children, foundChildren)
+      recurse()
     }
   }
 }
