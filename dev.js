@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const { MongoClient } = require('mongodb')
 
-const findChildren = require('./index.js')
+const findChildren = require('./')
 
 function test1() {
   let items = [
