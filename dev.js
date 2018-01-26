@@ -24,16 +24,18 @@ function test1() {
     const children = findChildren(item, items, {
       rootKey: 'id',
       foreignKey: 'parentId',
+      // withRoot: true,
+      withPath: 'name',
       // cachedItems,
       // enableMemoize: true,
     })
 
     item.children = children
-    return item
-
-    // console.log('name', item.name, 'children\n', JSON.stringify(children, null, 2), '\n'.repeat(5))
-    // throw 1
+    // return item
+    console.log('name', item.name, 'children\n', JSON.stringify(children, null, 2), '\n'.repeat(5))
+    throw 1
   })
+  console.log(items)
   console.log(items.length)
   console.timeEnd('test1')
 }
@@ -73,5 +75,5 @@ async function test2 () {
 }
 
 test1()
-test2()
+// test2()
 //
