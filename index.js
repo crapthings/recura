@@ -10,7 +10,7 @@ module.exports = function findChildren(root, items = [], opts = {}, mapper) {
   const {
     rootKey, foreignKey,
     withRoot, rootKeyOnly,
-    withPath,
+    pathKey, pathAs,
     enableMemoize,
     cachedItems,
   } = opts
@@ -22,7 +22,8 @@ module.exports = function findChildren(root, items = [], opts = {}, mapper) {
 
   let keyItemsByForeignKey
 
-  let children = [root]
+  const clonedRoot = { ...root }
+  let children = [clonedRoot]
   let _children = [].concat(children)
 
   recurse()
@@ -36,10 +37,10 @@ module.exports = function findChildren(root, items = [], opts = {}, mapper) {
   if (isFunction(mapper))
     return map(children, mapper)
 
-  if (withPath) {
+  if (pathKey) {
     keyItemsByForeignKey = keyBy(items, rootKey)
     for (child of children) {
-      child.path = recursePath(child[foreignKey], [child[withPath]], keyItemsByForeignKey)
+      child[pathAs] = recursePath(child[foreignKey], [child[pathKey]], keyItemsByForeignKey)
     }
   }
 
@@ -62,6 +63,9 @@ module.exports = function findChildren(root, items = [], opts = {}, mapper) {
 
   function recursePath(parentId, path = [], cached) {
     const parent = cached[parentId]
-    return parent ? recursePath(parent[foreignKey], [parent[withPath], ...path], cached) : path
+
+    return parent
+      ? recursePath(parent[foreignKey], [parent[pathKey], ...path], cached)
+      : path
   }
 }

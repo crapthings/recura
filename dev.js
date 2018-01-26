@@ -24,15 +24,16 @@ function test1() {
     const children = findChildren(item, items, {
       rootKey: 'id',
       foreignKey: 'parentId',
-      // withRoot: true,
-      withPath: 'name',
+      pathKey: 'name',
+      pathAs: 'path',
+      withRoot: true,
       // cachedItems,
       // enableMemoize: true,
     })
 
     item.children = children
     // return item
-    console.log('name', item.name, 'children\n', JSON.stringify(children, null, 2), '\n'.repeat(5))
+    console.log('name', item.name, 'children\n', JSON.stringify(item, null, 2), '\n'.repeat(5))
     throw 1
   })
   console.log(items)
